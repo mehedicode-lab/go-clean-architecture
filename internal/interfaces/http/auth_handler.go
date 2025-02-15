@@ -31,7 +31,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 
 	err := h.Service.Register(input.FullName, input.Email, input.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Registration failed"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -52,7 +52,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 
 	accessToken, refreshToken, user, err := h.Service.Login(input.Email, input.Password)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
